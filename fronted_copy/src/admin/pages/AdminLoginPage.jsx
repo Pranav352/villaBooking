@@ -36,7 +36,7 @@ function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
       <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <h1 className="text-2xl font-bold text-slate-900">Admin Login</h1>
-        <p className="mt-2 text-sm text-slate-600">Use your Django staff credentials (e.g., username: villa)</p>
+        <p className="mt-2 text-sm text-slate-600">Use your Django staff credentials </p>
 
         <form onSubmit={handleSubmit} className="mt-5 space-y-4">
           <input
