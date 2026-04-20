@@ -1,0 +1,24 @@
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Project specifics
+API_DOCUMENTATION.md
+API_DOCUMENTATION_WALKTHROUGH.md
+walkthrough.md
+task.md
+implementation_plan.md
