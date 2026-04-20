@@ -1,3 +1,8 @@
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
+![Django](https://img.shields.io/badge/Django-092E20?logo=django&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
+![Django REST](https://img.shields.io/badge/Backend-Django_REST-092E20?logo=django)
+
 # Villa Booking Platform
 
 A full-stack web application for discovering and booking luxury villas. This project features a modern React frontend with Tailwind CSS and a robust Django REST Framework backend.
@@ -37,6 +42,9 @@ A full-stack web application for discovering and booking luxury villas. This pro
 ```
 
 ---
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-npm-339933?logo=node.js&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?logo=postgresql&logoColor=white)
 
 ## ⚙️ Setup & Installation
 
@@ -87,6 +95,9 @@ A full-stack web application for discovering and booking luxury villas. This pro
    ```
 
 ---
+![JWT Auth](https://img.shields.io/badge/Auth-JWT-black?logo=jsonwebtokens)
+![REST API](https://img.shields.io/badge/API-REST-ff6f00)
+
 
 ## 📖 API Documentation
 For detailed information about API endpoints, authentication, and data structures, please refer to the [API Documentation](Backend/API_DOCUMENTATION.md).
