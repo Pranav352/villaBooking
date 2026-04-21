@@ -19,7 +19,7 @@ A full-stack web application for discovering and booking luxury villas. This pro
 - **Django 4.2**: High-level Python web framework.
 - **Django REST Framework (DRF)**: For building powerful APIs.
 - **PostgreSQL**: Production-grade relational database.
-- **DRF Token Auth**: Secure token-based authentication.
+- **JWT Authentication**: Secure stateless authentication using JSON Web Tokens (SimpleJWT).
 - **Advanced Logic**: Built-in booking overlap prevention and dynamic availability checks.
 
 
@@ -65,7 +65,7 @@ A full-stack web application for discovering and booking luxury villas. This pro
    ```
 3. Install dependencies:
    ```bash
-   pip install django djangorestframework django-cors-headers psycopg2-binary
+   pip install django djangorestframework djangorestframework-simplejwt django-cors-headers psycopg2-binary
    ```
 4. Run migrations:
    ```bash
