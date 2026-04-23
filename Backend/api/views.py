@@ -100,12 +100,23 @@ class ContactMessageView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request):
-        messages = ContactMessage.objects.all().order_by('-created_at')
-        serializer = ContactMessageSerializer(messages, many=True)
-        return Response(serializer.data)
+    def get(self, request, pk=None):
+        if pk:
+            try:
+                message = ContactMessage.objects.get(pk=pk)
+                serializer = ContactMessageSerializer(message)
+                return Response(serializer.data)
+            except ContactMessage.DoesNotExist:
+                return Response({"error": "Message not found."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            messages = ContactMessage.objects.all().order_by('-created_at')
+            serializer = ContactMessageSerializer(messages, many=True)
+            return Response(serializer.data)
 
     def delete(self, request, pk=None):
+        if not pk:
+            return Response({"error": "ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             message = ContactMessage.objects.get(pk=pk)
             message.delete()
