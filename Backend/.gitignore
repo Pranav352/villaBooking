@@ -17,10 +17,8 @@ env.bak/
 venv.bak/
 
 # Project specifics
-API_DOCUMENTATION.md
+# API_DOCUMENTATION.md
 API_DOCUMENTATION_WALKTHROUGH.md
 walkthrough.md
 task.md
 implementation_plan.md
-
-.DS_Store
