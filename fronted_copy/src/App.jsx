@@ -6,6 +6,7 @@ import AdminLoginPage from './admin/pages/AdminLoginPage'
 import ManageBookingsPage from './admin/pages/ManageBookingsPage'
 import ManageUsersPage from './admin/pages/ManageUsersPage'
 import ManageVillasPage from './admin/pages/ManageVillasPage'
+import ContactMessagesPage from './admin/pages/ContactMessagesPage'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
 import AboutPage from './pages/AboutPage'
@@ -93,6 +94,16 @@ function App() {
             <ProtectedAdminRoute>
               <AdminLayout>
                 <ManageUsersPage />
+              </AdminLayout>
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin/contact-messages"
+          element={
+            <ProtectedAdminRoute>
+              <AdminLayout>
+                <ContactMessagesPage />
               </AdminLayout>
             </ProtectedAdminRoute>
           }

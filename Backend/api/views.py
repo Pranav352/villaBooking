@@ -11,8 +11,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
-from .models import Villa, UserProfile, Booking
-from .serializers import VillaSerializer, UserProfileSerializer, BookingSerializer, RegisterSerializer
+from .models import Villa, UserProfile, Booking, ContactMessage
+from .serializers import VillaSerializer, UserProfileSerializer, BookingSerializer, RegisterSerializer, ContactMessageSerializer
 
 
 class VillaViewSet(viewsets.ModelViewSet):
@@ -78,3 +78,37 @@ class RegisterView(APIView):
             serializer.save()
             return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ContactMessageView(APIView):
+    """
+    POST  /api/contact/  — Save a new contact message from the form.
+    GET   /api/contact/  — List all messages (admin only).
+    """
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [permissions.IsAdminUser()]
+        return [permissions.AllowAny()]
+
+    def post(self, request):
+        serializer = ContactMessageSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"message": "Your message has been received. We'll get back to you shortly!"},
+                status=status.HTTP_201_CREATED
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request):
+        messages = ContactMessage.objects.all().order_by('-created_at')
+        serializer = ContactMessageSerializer(messages, many=True)
+        return Response(serializer.data)
+
+    def delete(self, request, pk=None):
+        try:
+            message = ContactMessage.objects.get(pk=pk)
+            message.delete()
+            return Response({"message": "Contact message deleted."}, status=status.HTTP_204_NO_CONTENT)
+        except ContactMessage.DoesNotExist:
+            return Response({"error": "Message not found."}, status=status.HTTP_404_NOT_FOUND)

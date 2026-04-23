@@ -7,7 +7,7 @@ Includes:
 from rest_framework import serializers
 
 from django.contrib.auth.models import User
-from .models import Villa, UserProfile, Booking
+from .models import Villa, UserProfile, Booking, ContactMessage
 from django.db.models import Q
 
 
@@ -84,3 +84,9 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data['email']
         )
         return user
+
+class ContactMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactMessage
+        fields = ['id', 'name', 'email', 'message', 'created_at']
+        read_only_fields = ['id', 'created_at']

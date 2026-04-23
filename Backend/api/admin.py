@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(Villa)
 admin.site.register(Booking)
 admin.site.register(UserProfile)
+admin.site.register(ContactMessage)
