@@ -1,16 +1,52 @@
-# React + Vite
+# Villa Book - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based administrative dashboard for managing luxury villa listings, built with **Vite** and styled with **Tailwind CSS**.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+*   **Villa Management**: Full CRUD operations (Create, Read, Update, Delete) for villa data.
+*   **Data Table**: Organized view of all available villas including location, price, and amenities.
+*   **Image Compression**: Automatic client-side image resizing and compression (JPEG 0.7) using Canvas API before saving.
+*   **Interactive UI**: Smooth modals for data entry and toast notifications for user feedback.
+*   **Responsive Design**: Built with Tailwind CSS to work across various screen sizes.
 
-## React Compiler
+## 🛠 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+*   **React**: UI Library
+*   **Vite**: Build tool and development server
+*   **Tailwind CSS**: Styling
+*   **Lucide React**: Icon set
+*   **Services**: Modularized API handlers for villa data
 
-## Expanding the ESLint configuration
+## 📦 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone <your-repo-url>
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+
+### Development
+
+Start the development server:
+```bash
+npm run dev
+```
+
+### Production
+
+Build the application:
+```bash
+npm run build
+```
+
+## 📝 Project Structure
+
+*   `src/admin/pages`: Main application views (e.g., `ManageVillasPage`).
+*   `src/admin/components`: Reusable UI elements like `DataTable`, `FormModal`, and `Toast`.
+*   `src/services`: API service layers for communicating with the backend.
