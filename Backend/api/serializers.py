@@ -7,11 +7,18 @@ Includes:
 from rest_framework import serializers
 
 from django.contrib.auth.models import User
-from .models import Villa, UserProfile, Booking, ContactMessage
+from .models import Villa, UserProfile, Booking, ContactMessage, Review
 from django.db.models import Q
 
 
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
+
 class VillaSerializer(serializers.ModelSerializer):
+    reviews = ReviewSerializer(many=True, read_only=True)
+    
     class Meta:
         model = Villa
         fields = '__all__'

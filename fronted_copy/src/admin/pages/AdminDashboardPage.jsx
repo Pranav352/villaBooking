@@ -65,9 +65,8 @@ function AdminDashboardPage() {
       label: "Status",
       render: (row) => (
         <span
-          className={`rounded-full px-2 py-1 text-xs font-semibold ${
-            row.status === "confirmed" ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"
-          }`}
+          className={`rounded-full px-2 py-1 text-xs font-semibold ${row.status === "confirmed" ? "bg-emerald-100 text-emerald-700" : "bg-rose-100 text-rose-700"
+            }`}
         >
           {row.status}
         </span>

@@ -7,6 +7,7 @@ import ManageBookingsPage from './admin/pages/ManageBookingsPage'
 import ManageUsersPage from './admin/pages/ManageUsersPage'
 import ManageVillasPage from './admin/pages/ManageVillasPage'
 import ContactMessagesPage from './admin/pages/ContactMessagesPage'
+import ManageReviewsPage from './admin/pages/ManageReviewsPage'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
 import AboutPage from './pages/AboutPage'
@@ -104,6 +105,16 @@ function App() {
             <ProtectedAdminRoute>
               <AdminLayout>
                 <ContactMessagesPage />
+              </AdminLayout>
+            </ProtectedAdminRoute>
+          }
+        />
+        <Route
+          path="/admin/reviews"
+          element={
+            <ProtectedAdminRoute>
+              <AdminLayout>
+                <ManageReviewsPage />
               </AdminLayout>
             </ProtectedAdminRoute>
           }

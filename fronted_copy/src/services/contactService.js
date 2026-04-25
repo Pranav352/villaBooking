@@ -14,3 +14,13 @@ export async function getContactMessages() {
 export async function deleteContactMessage(id) {
   return apiRequest(`contact/${id}/`, { method: "DELETE" })
 }
+
+/**
+ * Submit a new contact message.
+ */
+export async function submitContactForm(data) {
+  return apiRequest("contact/", {
+    method: "POST",
+    body: JSON.stringify(data),
+  })
+}

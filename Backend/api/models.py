@@ -11,8 +11,30 @@ class Villa(models.Model):
     amenities = models.JSONField(default=list)
     unavailable_dates = models.JSONField(default=list)
 
+    def update_rating(self):
+        reviews = self.reviews.all()
+        if reviews.exists():
+            avg = sum([r.rating for r in reviews]) / reviews.count()
+            self.rating = round(avg, 1)
+            self.save()
+
     def __str__(self):
         return self.name
+
+class Review(models.Model):
+    villa = models.ForeignKey(Villa, on_delete=models.CASCADE, related_name='reviews')
+    user_name = models.CharField(max_length=255)
+    user_email = models.EmailField()
+    rating = models.IntegerField() # 1 to 5
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.villa.update_rating()
+
+    def __str__(self):
+        return f"{self.user_name} - {self.villa.name} ({self.rating} stars)"
 
 class UserProfile(models.Model):
     name = models.CharField(max_length=255)

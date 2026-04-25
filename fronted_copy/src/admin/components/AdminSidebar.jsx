@@ -35,6 +35,9 @@ function AdminSidebar() {
           <NavLink to="/admin/contact-messages" className={linkClass}>
             Contact Messages
           </NavLink>
+          <NavLink to="/admin/reviews" className={linkClass}>
+            Manage Reviews
+          </NavLink>
         </nav>
       </div>
 

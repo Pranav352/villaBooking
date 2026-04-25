@@ -11,8 +11,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
-from .models import Villa, UserProfile, Booking, ContactMessage
-from .serializers import VillaSerializer, UserProfileSerializer, BookingSerializer, RegisterSerializer, ContactMessageSerializer
+from .models import Villa, UserProfile, Booking, ContactMessage, Review
+from .serializers import VillaSerializer, UserProfileSerializer, BookingSerializer, RegisterSerializer, ContactMessageSerializer, ReviewSerializer
 
 
 class VillaViewSet(viewsets.ModelViewSet):
@@ -69,6 +69,19 @@ class BookingViewSet(viewsets.ModelViewSet):
         # Full updates (PUT), partial updates (PATCH), and deletions (DELETE) 
         # must be restricted to Admin users for security and consistency.
         return [permissions.IsAdminUser()]
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    filterset_fields = ['villa', 'user_email']
+    ordering = ['-created_at']
+
+    def get_permissions(self):
+        if self.action in ['create']:
+            return [permissions.AllowAny()]
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [permissions.IsAdminUser()]
+        return [permissions.AllowAny()]
 class RegisterView(APIView):
     permission_classes = [permissions.AllowAny]
 
@@ -86,9 +99,9 @@ class ContactMessageView(APIView):
     GET   /api/contact/  — List all messages (admin only).
     """
     def get_permissions(self):
-        if self.request.method == 'GET':
-            return [permissions.IsAdminUser()]
-        return [permissions.AllowAny()]
+        if self.request.method == 'POST':
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]
 
     def post(self, request):
         serializer = ContactMessageSerializer(data=request.data)

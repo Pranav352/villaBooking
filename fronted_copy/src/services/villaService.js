@@ -6,6 +6,7 @@ function mapVillaFromBackend(villa) {
     pricePerNight: Number(villa.price_per_night),
     maxGuests: villa.max_guests,
     unavailableDates: villa.unavailable_dates || [],
+    reviews: villa.reviews || [],
   }
 }
 
@@ -83,6 +84,31 @@ export async function updateVilla(villaId, villaPayload) {
 
 export async function deleteVilla(villaId) {
   return await apiRequest(`villas/${villaId}/`, {
+    method: "DELETE",
+  })
+}
+
+export async function addReview(reviewPayload) {
+  const formattedPayload = {
+    villa: reviewPayload.villaId,
+    user_name: reviewPayload.name,
+    user_email: reviewPayload.email,
+    rating: reviewPayload.rating,
+    comment: reviewPayload.comment,
+  }
+  return await apiRequest("reviews/", {
+    method: "POST",
+    body: formattedPayload,
+  })
+}
+
+export async function getAllReviews() {
+  const data = await apiRequest("reviews/")
+  return Array.isArray(data) ? data : data.results || []
+}
+
+export async function deleteReview(reviewId) {
+  return await apiRequest(`reviews/${reviewId}/`, {
     method: "DELETE",
   })
 }

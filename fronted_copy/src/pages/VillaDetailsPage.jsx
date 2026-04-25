@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { getVillaById } from "../services/villaService"
+import ReviewSection from "../components/ReviewSection"
+import { Star } from "lucide-react"
 
 function VillaDetailsPage() {
   const { villaId } = useParams()
@@ -8,19 +10,25 @@ function VillaDetailsPage() {
   const [loading, setLoading] = useState(true)
   const [activeImage, setActiveImage] = useState(0)
 
-  useEffect(() => {
-    const fetchVilla = async () => {
-      try {
-        const data = await getVillaById(villaId)
-        setVilla(data)
-      } catch (error) {
-        console.error("Failed to fetch villa:", error)
-      } finally {
-        setLoading(false)
-      }
+  const fetchVilla = async () => {
+    try {
+      const data = await getVillaById(villaId)
+      setVilla(data)
+    } catch (error) {
+      console.error("Failed to fetch villa:", error)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchVilla()
   }, [villaId])
+
+  const handleReviewAdded = () => {
+    // Refresh villa data to get updated average rating and new review
+    fetchVilla()
+  }
 
   if (loading) {
     return <div className="p-10 text-center text-slate-600">Loading villa details...</div>
@@ -67,7 +75,13 @@ function VillaDetailsPage() {
 
       <section className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">{villa.name}</h1>
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-2xl font-bold text-slate-900">{villa.name}</h1>
+            <div className="flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-sm font-bold text-amber-600">
+              <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
+              {villa.rating}
+            </div>
+          </div>
           <p className="text-sm text-slate-500">{villa.location}</p>
           <p className="mt-3 text-slate-600">{villa.description}</p>
         </div>
@@ -109,6 +123,14 @@ function VillaDetailsPage() {
           Book Now
         </Link>
       </section>
+
+      <div className="lg:col-span-2">
+        <ReviewSection 
+          villaId={villa.id} 
+          reviews={villa.reviews} 
+          onReviewAdded={handleReviewAdded} 
+        />
+      </div>
     </div>
   )
 }

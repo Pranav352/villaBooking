@@ -35,7 +35,7 @@ export async function apiRequest(endpoint, options = {}) {
     // Extract error message from the new standardized backend format
     const backendData = error.response?.data
     const errorMessage = backendData?.message || backendData?.detail || error.message || "Something went wrong"
-    
+
     // Log details for developers if they exist
     if (backendData?.details) {
       console.error(`API Validation Error (${endpoint}):`, backendData.details)
