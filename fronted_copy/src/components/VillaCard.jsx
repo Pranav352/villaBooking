@@ -5,10 +5,10 @@ function VillaCard({ villa }) {
   return (
     <article className="group overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
       <div className="relative h-64 overflow-hidden">
-        <img 
-          src={villa.images[0]} 
-          alt={villa.name} 
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
+        <img
+          src={villa.images[0]}
+          alt={villa.name}
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute top-4 left-4">
           <span className="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold text-slate-900 shadow-sm backdrop-blur">
@@ -18,12 +18,12 @@ function VillaCard({ villa }) {
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
-      
+
       <div className="p-6">
         <div className="mb-2 flex items-center justify-between">
           <h3 className="line-clamp-1 text-xl font-bold text-slate-900">{villa.name}</h3>
         </div>
-        
+
         <div className="mb-4 flex items-center gap-1 text-slate-500">
           <MapPin className="h-4 w-4 shrink-0" />
           <span className="text-sm font-medium">{villa.location}</span>
