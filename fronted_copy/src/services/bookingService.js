@@ -12,8 +12,9 @@ function mapBookingFromBackend(booking) {
   }
 }
 
-export async function getBookings() {
-  const data = await apiRequest("bookings/")
+export async function getBookings(email) {
+  const endpoint = email ? `bookings/?user_email=${email}` : "bookings/"
+  const data = await apiRequest(endpoint)
   // Handle both paginated and non-paginated responses
   const bookings = Array.isArray(data) ? data : data.results || []
   return bookings.map(mapBookingFromBackend)

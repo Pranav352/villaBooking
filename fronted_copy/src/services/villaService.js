@@ -112,3 +112,7 @@ export async function deleteReview(reviewId) {
     method: "DELETE",
   })
 }
+
+export async function checkAvailability(villaId, checkIn, checkOut) {
+  return await apiRequest(`villas/${villaId}/check_availability/?check_in=${checkIn}&check_out=${checkOut}`)
+}

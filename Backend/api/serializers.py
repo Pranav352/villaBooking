@@ -7,7 +7,7 @@ Includes:
 from rest_framework import serializers
 
 from django.contrib.auth.models import User
-from .models import Villa, UserProfile, Booking, ContactMessage, Review
+from .models import Villa, UserProfile, Booking, ContactMessage, Review, Wishlist
 from django.db.models import Q
 
 
@@ -53,8 +53,8 @@ class BookingSerializer(serializers.ModelSerializer):
         if check_in and check_out and check_in >= check_out:
             raise serializers.ValidationError("Check-out date must be after check-in date.")
 
-        # Only check for overlaps if the booking is being set to 'confirmed'
-        if status == 'confirmed' and villa:
+        # Always check if the villa is already 'confirmed' for these dates by another user
+        if villa and status != 'cancelled':
             overlapping_bookings = Booking.objects.filter(
                 villa=villa,
                 status='confirmed'
@@ -66,7 +66,7 @@ class BookingSerializer(serializers.ModelSerializer):
                 overlapping_bookings = overlapping_bookings.exclude(pk=instance.pk)
 
             if overlapping_bookings.exists():
-                raise serializers.ValidationError("The villa is already booked for the selected dates.")
+                raise serializers.ValidationError("This villa is already booked for the selected dates.")
 
         return data
 
@@ -97,3 +97,11 @@ class ContactMessageSerializer(serializers.ModelSerializer):
         model = ContactMessage
         fields = ['id', 'name', 'email', 'message', 'created_at']
         read_only_fields = ['id', 'created_at']
+
+class WishlistSerializer(serializers.ModelSerializer):
+    villa_details = VillaSerializer(source='villa', read_only=True)
+    
+    class Meta:
+        model = Wishlist
+        fields = ['id', 'user_profile', 'villa', 'villa_details', 'added_at']
+        read_only_fields = ['id', 'added_at']

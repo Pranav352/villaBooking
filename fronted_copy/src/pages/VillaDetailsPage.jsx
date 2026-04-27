@@ -2,13 +2,18 @@ import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { getVillaById } from "../services/villaService"
 import ReviewSection from "../components/ReviewSection"
-import { Star } from "lucide-react"
+import { Star, Heart } from "lucide-react"
+import { toggleWishlist, getWishlist } from "../services/wishlistService"
+import toast from "react-hot-toast"
 
 function VillaDetailsPage() {
   const { villaId } = useParams()
   const [villa, setVilla] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activeImage, setActiveImage] = useState(0)
+  const [isSaved, setIsSaved] = useState(false)
+  const [isToggling, setIsToggling] = useState(false)
+  const user = JSON.parse(localStorage.getItem("villa_user") || "null")
 
   const fetchVilla = async () => {
     try {
@@ -23,7 +28,31 @@ function VillaDetailsPage() {
 
   useEffect(() => {
     fetchVilla()
-  }, [villaId])
+    if (user?.email) {
+      getWishlist(user.email).then(items => {
+        setIsSaved(items.some(item => item.villa === Number(villaId)))
+      })
+    }
+  }, [villaId, user?.email])
+
+  const handleToggleWishlist = async () => {
+    const currentUser = JSON.parse(localStorage.getItem("villa_user") || "null")
+    if (!currentUser) {
+      toast.error("Please sign in to save villas!")
+      return
+    }
+
+    setIsToggling(true)
+    try {
+      const result = await toggleWishlist(villa.id, currentUser.email)
+      setIsSaved(result.saved)
+      toast.success(result.message)
+    } catch (error) {
+      toast.error(error.message)
+    } finally {
+      setIsToggling(false)
+    }
+  }
 
   const handleReviewAdded = () => {
     // Refresh villa data to get updated average rating and new review
@@ -81,6 +110,17 @@ function VillaDetailsPage() {
               <Star className="h-4 w-4 fill-amber-500 text-amber-500" />
               {villa.rating}
             </div>
+            <button
+              onClick={handleToggleWishlist}
+              disabled={isToggling}
+              className={`flex h-10 w-10 items-center justify-center rounded-full border transition-all ${
+                isSaved 
+                  ? "bg-rose-50 border-rose-100 text-rose-500" 
+                  : "bg-white border-slate-200 text-slate-400 hover:border-rose-200 hover:text-rose-500"
+              }`}
+            >
+              <Heart size={20} className={isSaved ? "fill-current" : ""} />
+            </button>
           </div>
           <p className="text-sm text-slate-500">{villa.location}</p>
           <p className="mt-3 text-slate-600">{villa.description}</p>

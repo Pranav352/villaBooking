@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { NavLink } from "react-router-dom"
-import { Menu, X, User, LogOut } from "lucide-react"
+import { Menu, X, User, LogOut, Heart } from "lucide-react"
+import { getWishlist } from "../services/wishlistService"
 
 const navItemClass = ({ isActive }) =>
   `cursor-pointer rounded-xl px-4 py-2 text-sm font-semibold transition-all ${
@@ -15,22 +16,40 @@ const mobileNavItemClass = ({ isActive }) =>
 function Navbar() {
   const [user, setUser] = useState(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [wishlistCount, setWishlistCount] = useState(0)
+
+  const fetchCount = useCallback(async (email) => {
+    try {
+      const items = await getWishlist(email)
+      setWishlistCount(items.length)
+    } catch (error) {
+      console.error("Failed to fetch wishlist count:", error)
+    }
+  }, [])
 
   useEffect(() => {
     const syncUser = () => {
       const rawUser = localStorage.getItem("villa_user")
-      setUser(rawUser ? JSON.parse(rawUser) : null)
+      const parsedUser = rawUser ? JSON.parse(rawUser) : null
+      setUser(parsedUser)
+      if (parsedUser?.email) {
+        fetchCount(parsedUser.email)
+      } else {
+        setWishlistCount(0)
+      }
     }
 
     syncUser()
     window.addEventListener("storage", syncUser)
     window.addEventListener("auth-change", syncUser)
+    window.addEventListener("wishlist-change", syncUser)
 
     return () => {
       window.removeEventListener("storage", syncUser)
       window.removeEventListener("auth-change", syncUser)
+      window.removeEventListener("wishlist-change", syncUser)
     }
-  }, [])
+  }, [fetchCount])
 
   const handleLogout = () => {
     localStorage.removeItem("villa_user")
@@ -58,7 +77,20 @@ function Navbar() {
           <NavLink to="/about" className={navItemClass}>About</NavLink>
           <NavLink to="/contact" className={navItemClass}>Contact</NavLink>
           {user && (
-            <NavLink to="/dashboard" className={navItemClass}>My Stays</NavLink>
+            <>
+              <NavLink to="/dashboard" className={navItemClass}>My Stays</NavLink>
+              <NavLink to="/wishlist" className={navItemClass}>
+                <div className="flex items-center gap-1.5 relative">
+                   <Heart size={14} className="fill-current text-rose-500" />
+                   Wishlist
+                   {wishlistCount > 0 && (
+                     <span className="absolute -top-2 -right-3 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white">
+                       {wishlistCount}
+                     </span>
+                   )}
+                </div>
+              </NavLink>
+            </>
           )}
 
           <div className="ml-2 flex items-center gap-3 border-l border-slate-200 pl-4">
@@ -107,7 +139,13 @@ function Navbar() {
             <NavLink to="/about" className={mobileNavItemClass} onClick={() => setIsMenuOpen(false)}>About</NavLink>
             <NavLink to="/contact" className={mobileNavItemClass} onClick={() => setIsMenuOpen(false)}>Contact</NavLink>
             {user && (
-              <NavLink to="/dashboard" className={mobileNavItemClass} onClick={() => setIsMenuOpen(false)}>My Stays</NavLink>
+              <>
+                <NavLink to="/dashboard" className={mobileNavItemClass} onClick={() => setIsMenuOpen(false)}>My Stays</NavLink>
+                <NavLink to="/wishlist" className={mobileNavItemClass} onClick={() => setIsMenuOpen(false)}>
+                   <Heart size={18} className="text-rose-500" />
+                   Wishlist
+                </NavLink>
+              </>
             )}
             
             <div className="mt-4 border-t border-slate-100 pt-4">

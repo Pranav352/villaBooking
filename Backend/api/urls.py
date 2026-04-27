@@ -6,13 +6,14 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import VillaViewSet, UserProfileViewSet, BookingViewSet, RegisterView, ContactMessageView, ReviewViewSet
+from .views import VillaViewSet, UserProfileViewSet, BookingViewSet, RegisterView, ContactMessageView, ReviewViewSet, WishlistViewSet
 
 router = DefaultRouter()
 router.register(r'villas', VillaViewSet)
 router.register(r'user-profiles', UserProfileViewSet)
 router.register(r'bookings', BookingViewSet)
 router.register(r'reviews', ReviewViewSet)
+router.register(r'wishlist', WishlistViewSet, basename='wishlist')
 
 urlpatterns = [
     path('', include(router.urls)),

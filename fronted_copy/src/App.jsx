@@ -18,6 +18,7 @@ import DashboardPage from './pages/DashboardPage'
 import HomePage from './pages/HomePage'
 import VillaDetailsPage from './pages/VillaDetailsPage'
 import VillaListingPage from './pages/VillaListingPage'
+import WishlistPage from './pages/WishlistPage'
 import { isAdminAuthenticated } from './services/adminAuthService'
 
 function AppLayout({ children }) {
@@ -164,6 +165,14 @@ function App() {
           element={
             <AppLayout>
               <DashboardPage />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/wishlist"
+          element={
+            <AppLayout>
+              <WishlistPage />
             </AppLayout>
           }
         />

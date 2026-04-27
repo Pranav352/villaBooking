@@ -4,19 +4,21 @@ A React-based administrative dashboard for managing luxury villa listings, built
 
 ## 🚀 Features
 
-*   **Villa Management**: Full CRUD operations (Create, Read, Update, Delete) for villa data.
-*   **Data Table**: Organized view of all available villas including location, price, and amenities.
-*   **Image Compression**: Automatic client-side image resizing and compression (JPEG 0.7) using Canvas API before saving.
-*   **Interactive UI**: Smooth modals for data entry and toast notifications for user feedback.
-*   **Responsive Design**: Built with Tailwind CSS to work across various screen sizes.
+*   **Villa Management**: Full CRUD operations for villa data.
+*   **Wishlist Support**: User-friendly wishlist management for saving favorite villas.
+*   **Reviews System**: Integrated rating and review interface for villa detail pages.
+*   **Pagination**: Advanced pagination logic for browsing large villa collections.
+*   **Image Compression**: Automatic client-side image resizing and compression.
+*   **Interactive UI**: Smooth modals, hover effects, and premium transitions.
 
 ## 🛠 Tech Stack
 
-*   **React**: UI Library
+*   **React 19**: UI Library
 *   **Vite**: Build tool and development server
-*   **Tailwind CSS**: Styling
+*   **Tailwind CSS 4**: Styling
 *   **Lucide React**: Icon set
-*   **Services**: Modularized API handlers for villa data
+*   **React Router 7**: Navigation
+*   **Services**: Modularized API handlers for villas, bookings, reviews, and wishlist.
 
 ## 📦 Getting Started
 
@@ -47,6 +49,8 @@ npm run build
 
 ## 📝 Project Structure
 
-*   `src/admin/pages`: Main application views (e.g., `ManageVillasPage`).
-*   `src/admin/components`: Reusable UI elements like `DataTable`, `FormModal`, and `Toast`.
-*   `src/services`: API service layers for communicating with the backend.
+*   `src/admin/pages`: Administrative management views.
+*   `src/admin/components`: Admin UI elements (DataTable, FormModal).
+*   `src/components`: Public-facing reusable components (VillaCard, Pagination, ReviewSection).
+*   `src/services`: API service layers for Backend communication.
+*   `src/hooks`: Custom hooks for state and side-effect management.

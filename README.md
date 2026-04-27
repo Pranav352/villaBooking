@@ -3,7 +3,7 @@
 ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
 ![Django REST](https://img.shields.io/badge/Backend-Django_REST-092E20?logo=django)
 
-# Villa Booking Platform
+# Villa Booking Platform ![Status](https://img.shields.io/badge/status-active-brightgreen)
 
 A full-stack web application for discovering and booking luxury villas. This project features a modern React frontend with Tailwind CSS and a robust Django REST Framework backend.
 
@@ -104,6 +104,18 @@ For detailed information about API endpoints, authentication, and data structure
 
 ---
 
+## 🌟 Latest Updates
+
+We've recently added several powerful features to enhance the villa booking experience:
+
+- **Villa Wishlist**: Save your favorite villas to a personal wishlist for easy access later.
+- **Reviews & Ratings**: Share your experience and browse ratings from other travelers.
+- **Dynamic Pagination**: Smoother browsing experience with server-side pagination for villa listings.
+- **Contact Support**: Integrated contact form for direct inquiries and support requests.
+- **Enhanced UI/UX**: Refined dashboard layouts, interactive buttons, and premium design polish across the app.
+
+---
+
 ## ✨ Key Features
 - **Villa Discovery**: Browse a curated list of luxury villas with high-quality images.
 - **Advanced Filtering**: Filter villas by location, guest capacity, and price range.
@@ -111,10 +123,13 @@ For detailed information about API endpoints, authentication, and data structure
 - **Smart Booking System**: Prevents double-bookings with backend validation logic for overlapping dates.
 - **Secure Authentication**: Integrated User registration and Token-based authentication.
 - **Admin Dashboard**: Secure management of villas and bookings via the Django Admin interface.
+- **Wishlist System**: Personal collection of favorite properties.
+- **Reviews & Ratings**: Community-driven feedback and transparent rating system.
+- **Contact Integration**: Easy communication with villa administrators.
 - **User Profiles**: Automatic profile creation upon registration.
 
 
 ---
 
-## 🔒 Licenses
+## 🔒 Licenses ![License](https://img.shields.io/badge/license-MIT-green)
 This project is for demonstration purposes.

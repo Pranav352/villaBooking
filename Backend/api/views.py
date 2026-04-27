@@ -11,8 +11,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
-from .models import Villa, UserProfile, Booking, ContactMessage, Review
-from .serializers import VillaSerializer, UserProfileSerializer, BookingSerializer, RegisterSerializer, ContactMessageSerializer, ReviewSerializer
+from .models import Villa, UserProfile, Booking, ContactMessage, Review, Wishlist
+from .serializers import VillaSerializer, UserProfileSerializer, BookingSerializer, RegisterSerializer, ContactMessageSerializer, ReviewSerializer, WishlistSerializer
 
 
 class VillaViewSet(viewsets.ModelViewSet):
@@ -58,9 +58,21 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
-    filterset_fields = ['status', 'user_email', 'villa']
-    ordering_fields = ['check_in', 'created_at']
-    ordering = ['-created_at']
+    pagination_class = None
+
+    def get_queryset(self):
+        queryset = Booking.objects.all()
+        user_email = self.request.query_params.get('user_email')
+        
+        # Admin can see everything
+        if self.request.user.is_staff:
+            return queryset
+            
+        if user_email:
+            return queryset.filter(user_email=user_email)
+            
+        # If no email provided and not admin, return nothing for security
+        return queryset.none()
 
     def get_permissions(self):
         # Allow anybody to create a booking or view details
@@ -136,3 +148,42 @@ class ContactMessageView(APIView):
             return Response({"message": "Contact message deleted."}, status=status.HTTP_204_NO_CONTENT)
         except ContactMessage.DoesNotExist:
             return Response({"error": "Message not found."}, status=status.HTTP_404_NOT_FOUND)
+
+class WishlistViewSet(viewsets.ModelViewSet):
+    queryset = Wishlist.objects.all()
+    serializer_class = WishlistSerializer
+    permission_classes = [permissions.AllowAny]
+    pagination_class = None
+
+    def get_queryset(self):
+        queryset = Wishlist.objects.all()
+        email = self.request.query_params.get('user_profile__email')
+        if email:
+            return queryset.filter(user_profile__email=email)
+        # If no email provided, don't return anything for security
+        return queryset.none()
+
+    @action(detail=False, methods=['post'])
+    def toggle(self, request):
+        villa_id = request.data.get('villa_id')
+        user_email = request.data.get('email')
+
+        if not villa_id or not user_email:
+            return Response({"error": "villa_id and email are required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            villa = Villa.objects.get(id=villa_id)
+            user_profile = UserProfile.objects.get(email=user_email)
+        except Villa.DoesNotExist:
+            return Response({"error": "Villa not found"}, status=status.HTTP_404_NOT_FOUND)
+        except UserProfile.DoesNotExist:
+            return Response({"error": "User profile not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        wishlist_item = Wishlist.objects.filter(user_profile=user_profile, villa=villa)
+        
+        if wishlist_item.exists():
+            wishlist_item.delete()
+            return Response({"message": "Removed from wishlist", "saved": False}, status=status.HTTP_200_OK)
+        else:
+            Wishlist.objects.create(user_profile=user_profile, villa=villa)
+            return Response({"message": "Added to wishlist", "saved": True}, status=status.HTTP_201_CREATED)

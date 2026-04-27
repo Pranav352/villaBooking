@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import toast from "react-hot-toast"
 import ButtonLoader from "./ButtonLoader"
+import { checkAvailability } from "../services/villaService"
 
 const ONE_DAY_MS = 1000 * 60 * 60 * 24
 
@@ -23,6 +24,8 @@ const getTodayLocal = () => {
 
 function BookingForm({ villa, onSubmit, currentUser }) {
   const [isLoading, setIsLoading] = useState(false)
+  const [isAvailable, setIsAvailable] = useState(true)
+  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false)
   const today = getTodayLocal()
 
   const bookingSchema = z.object({
@@ -66,7 +69,35 @@ function BookingForm({ villa, onSubmit, currentUser }) {
 
   const totalPrice = nights * villa.pricePerNight
 
+  useEffect(() => {
+    const checkVillaAvailability = async () => {
+      if (watchCheckIn && watchCheckOut && nights > 0) {
+        setIsCheckingAvailability(true)
+        try {
+          const response = await checkAvailability(villa.id, watchCheckIn, watchCheckOut)
+          setIsAvailable(response.available)
+          if (!response.available) {
+            toast.error("These dates are already booked. Please choose different dates.", { id: "availability-error" })
+          }
+        } catch (error) {
+          console.error("Availability check failed:", error)
+        } finally {
+          setIsCheckingAvailability(false)
+        }
+      } else {
+        setIsAvailable(true)
+      }
+    }
+
+    const timer = setTimeout(checkVillaAvailability, 500)
+    return () => clearTimeout(timer)
+  }, [watchCheckIn, watchCheckOut, nights, villa.id])
+
   const onFormSubmit = async (data) => {
+    if (!isAvailable) {
+      toast.error("Villa is not available for these dates.")
+      return
+    }
     setIsLoading(true)
     try {
       await onSubmit({ ...data, nights, totalPrice })
@@ -142,6 +173,22 @@ function BookingForm({ villa, onSubmit, currentUser }) {
         </div>
       </div>
 
+      {!isAvailable && nights > 0 && (
+        <div className="rounded-2xl bg-rose-50 p-4 border border-rose-100 flex items-start gap-3">
+          <div className="mt-0.5 h-2 w-2 rounded-full bg-rose-500 flex-shrink-0" />
+          <p className="text-xs font-medium text-rose-600 leading-relaxed">
+            The villa is already booked for these dates. Please select alternative dates to continue with your reservation.
+          </p>
+        </div>
+      )}
+
+      {isCheckingAvailability && (
+        <div className="flex items-center justify-center gap-2 py-1">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-200 border-t-emerald-500" />
+          <span className="text-xs font-medium text-slate-500">Checking availability...</span>
+        </div>
+      )}
+
       <div className="space-y-3 rounded-2xl bg-slate-900 p-5 text-white shadow-inner">
         <div className="flex justify-between text-sm text-slate-400">
           <span>{nights || 0} nights × ₹{villa.pricePerNight.toLocaleString()}</span>
@@ -155,10 +202,10 @@ function BookingForm({ villa, onSubmit, currentUser }) {
 
       <button
         type="submit"
-        disabled={isLoading || nights === 0}
+        disabled={isLoading || nights === 0 || !isAvailable || isCheckingAvailability}
         className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-6 py-4 font-bold text-white shadow-lg shadow-emerald-200 transition-all hover:bg-emerald-700 hover:shadow-emerald-300 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
       >
-        {isLoading ? <ButtonLoader /> : "Confirm Reservation"}
+        {isLoading ? <ButtonLoader /> : !isAvailable ? "Dates Unavailable" : "Confirm Reservation"}
       </button>
 
       {nights === 0 && (

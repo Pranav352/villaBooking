@@ -71,3 +71,14 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.name} <{self.email}> - {self.created_at.strftime('%Y-%m-%d %H:%M')}"
+
+class Wishlist(models.Model):
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='wishlist')
+    villa = models.ForeignKey(Villa, on_delete=models.CASCADE, related_name='wishlisted_by')
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user_profile', 'villa')
+
+    def __str__(self):
+        return f"{self.user_profile.email} saved {self.villa.name}"

@@ -150,6 +150,79 @@ Manage villa bookings.
 
 ---
 
+### 4. Reviews
+Manage villa reviews and ratings.
+
+| Method | Endpoint | Description | Permissions |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/reviews/` | List all reviews | AllowAny |
+| `POST` | `/api/reviews/` | Create a new review | AllowAny |
+| `GET` | `/api/reviews/{id}/` | Get review details | AllowAny |
+| `DELETE` | `/api/reviews/{id}/` | Delete a review | AllowAny |
+
+#### Review Object Structure
+```json
+{
+  "id": 1,
+  "villa": 1,
+  "user_name": "Alice Smith",
+  "user_email": "alice@example.com",
+  "rating": 5,
+  "comment": "Incredible stay! Highly recommend.",
+  "created_at": "2026-04-25T10:00:00Z"
+}
+```
+
+---
+
+### 5. Wishlist
+Manage personal villa wishlists.
+
+| Method | Endpoint | Description | Permissions |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/wishlist/` | List current user's wishlist | AllowAny |
+| `POST` | `/api/wishlist/` | Add a villa to wishlist | AllowAny |
+| `DELETE` | `/api/wishlist/{id}/` | Remove from wishlist | AllowAny |
+
+#### Wishlist Object Structure
+```json
+{
+  "id": 1,
+  "user_profile": 1,
+  "villa": 1,
+  "villa_details": {
+    "name": "Luxury Ocean View Villa",
+    "location": "Maldives",
+    "price_per_night": "500.00"
+  },
+  "added_at": "2026-04-27T08:30:00Z"
+}
+```
+
+---
+
+### 6. Contact Messages
+Support and inquiry management.
+
+| Method | Endpoint | Description | Permissions |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/contact/` | Submit a contact inquiry | AllowAny |
+| `GET` | `/api/contact/` | List all inquiries | IsAdminUser |
+| `GET` | `/api/contact/{id}/` | Get inquiry details | IsAdminUser |
+
+#### Contact Object Structure
+```json
+{
+  "id": 1,
+  "name": "Bob Brown",
+  "email": "bob@example.com",
+  "message": "I have a question about the Maldives villa.",
+  "created_at": "2026-04-25T12:00:00Z"
+}
+```
+
+---
+
 ## Status Codes
 
 - `200 OK`: Request succeeded.

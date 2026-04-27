@@ -1,7 +1,46 @@
 import { Link } from "react-router-dom"
-import { MapPin, Star, User } from "lucide-react"
+import { MapPin, Star, User, Heart } from "lucide-react"
+import { useState, useEffect } from "react"
+import toast from "react-hot-toast"
+import { toggleWishlist, getWishlist } from "../services/wishlistService"
 
-function VillaCard({ villa }) {
+function VillaCard({ villa, onWishlistUpdate, showHeart = false }) {
+  const [isSaved, setIsSaved] = useState(false)
+  const [isToggling, setIsToggling] = useState(false)
+
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem("villa_user") || "null")
+    if (currentUser?.email) {
+      getWishlist(currentUser.email).then(items => {
+        setIsSaved(items.some(item => item.villa === villa.id))
+      })
+    }
+  }, [villa.id])
+
+  const handleToggleWishlist = async (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    const currentUser = JSON.parse(localStorage.getItem("villa_user") || "null")
+    if (!currentUser) {
+      toast.error("Please sign in to save villas!")
+      return
+    }
+
+    setIsToggling(true)
+    try {
+      const result = await toggleWishlist(villa.id, currentUser.email)
+      setIsSaved(result.saved)
+      toast.success(result.message)
+      window.dispatchEvent(new Event("wishlist-change"))
+      if (onWishlistUpdate) onWishlistUpdate()
+    } catch (error) {
+      toast.error(error.message)
+    } finally {
+      setIsToggling(false)
+    }
+  }
+
   return (
     <article className="group overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
       <div className="relative h-64 overflow-hidden">
@@ -16,6 +55,21 @@ function VillaCard({ villa }) {
             {villa.rating}
           </span>
         </div>
+        {showHeart && (
+          <div className="absolute top-4 right-4">
+            <button
+              onClick={handleToggleWishlist}
+              disabled={isToggling}
+              className={`flex h-10 w-10 items-center justify-center rounded-full shadow-lg backdrop-blur transition-all active:scale-90 ${
+                isSaved 
+                  ? "bg-rose-500 text-white" 
+                  : "bg-white/80 text-slate-400 hover:text-rose-500"
+              }`}
+            >
+              <Heart size={20} className={isSaved ? "fill-current" : ""} />
+            </button>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
 
