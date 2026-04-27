@@ -133,3 +133,17 @@ We've recently added several powerful features to enhance the villa booking expe
 
 ## 🔒 Licenses ![License](https://img.shields.io/badge/license-MIT-green)
 This project is for demonstration purposes.
+
+## 📸 Project Preview
+<img width="1374" height="892" alt="Villa" src="https://github.com/user-attachments/assets/12cd6eb5-82d5-4584-8f18-96b57309d501" />
+
+------
+
+<img width="1329" height="854" alt="villa2" src="https://github.com/user-attachments/assets/f0b7cd14-6204-4bc9-a5a0-240913b7f503" />
+
+------
+
+
+<img width="1324" height="355" alt="villa3" src="https://github.com/user-attachments/assets/fd213acd-f216-41c8-839d-a142068be0d5" />
+
+------
