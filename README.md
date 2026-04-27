@@ -139,7 +139,7 @@ This project is for demonstration purposes.
 
 ------
 
-<img width="1329" height="854" alt="villa2" src="https://github.com/user-attachments/assets/f0b7cd14-6204-4bc9-a5a0-240913b7f503" />
+<img width="1367" height="856" alt="villa2" src="https://github.com/user-attachments/assets/46321691-42b7-4ebd-ac32-0175be82a2cd" />
 
 ------
 
