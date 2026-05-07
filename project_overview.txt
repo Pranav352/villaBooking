@@ -9,6 +9,8 @@ The backend (located in /villa_backend) acts as the "Brain" and "Data Vault" of 
 Key Files:
 - settings.py: The central configuration. It manages database connections (PostgreSQL), security keys, installed apps (like 'api' and 'rest_framework'), and middleware (CORS, Authentication).
 - urls.py: The routing table. It directs incoming web requests to the correct logic (e.g., any request to /api/ is sent to the api app).
+- API versioning: The backend exposes versioned endpoints under `/api/v1/` and `/api/v2/`, allowing you to maintain backward compatibility while evolving the API.
+- Swagger / OpenAPI documentation: The project includes generated API docs using Swagger/OpenAPI, giving developers a browsable contract for available endpoints and request/response schemas.
 - wsgi.py / asgi.py: The entry points for web servers to communicate with your code (WSGI for standard sync traffic, ASGI for modern async/WebSockets).
 
 How it works:

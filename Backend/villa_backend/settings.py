@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'corsheaders',
+    'drf_yasg',
     'api',
 ]
 
@@ -171,4 +172,22 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": False,
     "ALGORITHM": "HS256",
+}
+
+# Swagger/OpenAPI Documentation Settings
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"'
+        }
+    },
+    'USE_SESSION_AUTH': True,
+    'LOGIN_URL': 'admin:login',
+    'LOGOUT_URL': 'admin:logout',
+    'REFETCH_SCHEMA_WITH_AUTH': True,
+    'OPERATIONS_SORTER': 'method',
+    'TAGS_SORTER': 'alpha',
 }

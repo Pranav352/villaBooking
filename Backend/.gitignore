@@ -17,11 +17,14 @@ env.bak/
 venv.bak/
 
 # Project specifics
-# API_DOCUMENTATION.md
+API_DOCUMENTATION.md
 API_DOCUMENTATION_WALKTHROUGH.md
 walkthrough.md
 task.md
 implementation_plan.md
 
-echo .vscode/
+ .vscode/
 error.html
+villabook_db
+.vscode/
+.DS_Store

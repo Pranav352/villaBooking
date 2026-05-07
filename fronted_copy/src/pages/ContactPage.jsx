@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const API_BASE = "http://127.0.0.1:8000/api"
+const API_BASE = "http://127.0.0.1:8000/api/v1"
 
 function ContactPage() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" })
