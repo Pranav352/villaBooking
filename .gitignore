@@ -3,3 +3,5 @@
 DOCKER_GUIDE.md
 DOCKER.md
 .DS_Store
+.env
+.env.docker
