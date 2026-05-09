@@ -1,17 +1,29 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   db:
     image: postgres:15
     container_name: villa_db
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     env_file:
       - .env.docker
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    # Removed ports to hide database from host machine access
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - villa_network
 
   backend:
-    build: ./Backend
+    build: 
+      context: ./Backend
+      dockerfile: Dockerfile
     container_name: villa_backend
     command: python manage.py runserver 0.0.0.0:8000
     env_file:
@@ -21,10 +33,15 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - villa_network
 
   frontend:
-    build: ./fronted_copy
+    build: 
+      context: ./fronted_copy
+      dockerfile: Dockerfile
     container_name: villa_frontend
     env_file:
       - .env.docker
@@ -34,7 +51,14 @@ services:
       - ./fronted_copy:/app
       - /app/node_modules
     depends_on:
-      - backend
+      backend:
+        condition: service_started
+    networks:
+      - villa_network
+
+networks:
+  villa_network:
+    driver: bridge
 
 volumes:
   postgres_data:
