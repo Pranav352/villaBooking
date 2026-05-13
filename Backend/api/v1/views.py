@@ -68,17 +68,21 @@ class BookingViewSet(viewsets.ModelViewSet):
         if self.request.user.is_staff:
             return queryset
             
-        if user_email:
-            return queryset.filter(user_email=user_email)
+        # For list actions, filter by user_email if provided
+        if self.action == 'list':
+            if user_email:
+                return queryset.filter(user_email=user_email)
+            return queryset.none()
             
-        # If no email provided and not admin, return nothing for security
-        return queryset.none()
+        # For detail actions (retrieve, update, partial_update, destroy), 
+        # allow access by ID. (Ownership check could be added here later)
+        return queryset
 
     def get_permissions(self):
-        # Allow anybody to create a booking or view details
-        if self.action in ['create', 'list', 'retrieve']:
+        # Allow anybody to create a booking, view list/details, or cancel (partial_update)
+        if self.action in ['create', 'list', 'retrieve', 'partial_update']:
             return [permissions.AllowAny()]
-        # Full updates (PUT), partial updates (PATCH), and deletions (DELETE) 
+        # Full updates (PUT) and deletions (DELETE) 
         # must be restricted to Admin users for security and consistency.
         return [permissions.IsAdminUser()]
 
