@@ -5,3 +5,4 @@ DOCKER.md
 .DS_Store
 .env
 .env.docker
+.github
