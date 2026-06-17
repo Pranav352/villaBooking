@@ -28,3 +28,8 @@ error.html
 villabook_db
 .vscode/
 .DS_Store
+.pytest_cache/
+coverage/
+pytest.ini
+.flake8
+test
